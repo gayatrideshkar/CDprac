@@ -1,55 +1,48 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-
-long long convertToDecimal(char *str) {
-    // Check if the number is negative
-    int negative = 0;
-    if (str[0] == '-') {
-        negative = 1;
-        str++; // Move past the '-' character
-    }
-
-    long long result = 0;
-
-    // Determine the base of the number
-    int base = 10;
-    if (str[0] == '0') {
-        if (tolower(str[1]) == 'x') {
-            base = 16; // Hexadecimal
-            str += 2; // Move past "0x"
-        } else {
-            base = 8; // Octal
-            str++; // Move past '0'
-        }
-    }
-
-    // Convert the string to decimal
-    while (*str) {
-        char c = *str++;
-        int digit;
-        if (isdigit(c)) {
-            digit = c - '0';
-        } else if (base == 16 && isxdigit(c)) {
-            digit = tolower(c) - 'a' + 10;
-        } else {
-            printf("Invalid input!\n");
-            exit(EXIT_FAILURE);
-        }
-        result = result * base + digit;
-    }
-
-    return (negative ? -result : result);
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<ctype.h>
+int main(){
+char num[20];
+int decimal = 0;
+printf("Enter an integer constant (in decimal, octal, or hexadecimal format): ");
+scanf("%s", num);
+int is_negative = 0;
+if (num[0] == '-') {
+is_negative = 1;
+memmove(num, num+1, strlen(num)+1); // Include null terminator
 }
-
-int main() {
-    char str[100];
-    printf("Enter an integer constant as a string: ");
-    scanf("%s", str);
-
-    long long decimalNumber = convertToDecimal(str);
-    printf("Decimal representation: %lld\n", decimalNumber);
-
-    return 0;
+int base = 10;
+if (num[0] == '0') {
+if (num[1] == 'x' || num[1] == 'X') {
+base = 16;
+memmove(num, num+2, strlen(num)+1); // Include null terminator
+} else {
+base = 8;
+memmove(num, num+1, strlen(num)+1); // Include null terminator
+}
+}
+int i = 0;
+while (num[i] != '\0') {
+int digit;
+if (isdigit(num[i])) {
+digit = num[i] - '0';
+} else if (isalpha(num[i])) {
+digit = toupper(num[i]) - 'A' + 10;
+} else {
+printf("Invalid character: %c\n", num[i]);
+return 1;
+}
+if (digit >= base) {
+printf("Invalid digit for base %d: %c\n", base, num[i]);
+return 1;
+}
+decimal = decimal * base + digit;
+i++;
+}
+if (is_negative) {
+decimal = -decimal;
+}
+printf("The decimal equivalent of %s is %d\n", num, decimal);
+return 0;
 }
