@@ -1,0 +1,18 @@
+import pandas as pd
+
+# Load iris dataset
+iris = pd.read_csv("https://raw.githubusercontent.com/uiuc-cse/data-fa14/gh-pages/data/iris.csv")
+
+# Define subset criteria
+subset_criteria = iris['species'] == 'setosa'
+
+# Subset of iris dataset where species is setosa
+setosa_subset = iris[subset_criteria]
+
+# Aggregate function to find mean of sepal_length for setosa species
+mean_sepal_length_setosa = setosa_subset['sepal_length'].mean()
+
+print("Subset of iris dataset where species is setosa:")
+print(setosa_subset)
+
+print("\nMean sepal length for setosa species:", mean_sepal_length_setosa)
